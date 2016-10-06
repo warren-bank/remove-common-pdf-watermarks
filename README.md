@@ -4,8 +4,8 @@
 
 > Each branch is a variation of the script, customized to remove a particular common PDF watermark.
 
-* [www.it-ebooks.info](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/strategy/it-ebooks)
-* [www.wowebook.org](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/strategy/wowebook)
+* [www.it-ebooks.info](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/it-ebooks)
+* [www.wowebook.org](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook)
 
 ### Notes
 
