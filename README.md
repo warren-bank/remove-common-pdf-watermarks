@@ -4,6 +4,7 @@
 
 > Each branch is a variation of the script, customized to remove a particular common PDF watermark.
 
+* ["www.finebook.ir"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/finebook.ir)
 * ["www.it-ebooks.info"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/it-ebooks)
 * ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook)
   * [decrypted/decompressed (with `qpdf`)](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook-decrypted-decompressed)
@@ -24,10 +25,10 @@
 
     ```
     This document "out.pdf" has errors.
-    
+
     Some problems were detected by application:
     - One or more XREF chunks were not found.
-    
+
     It is recommended you re-save this document.
     ```
 * After following the recommendation given by the viewer and resaving the PDF document (ie: `File > Save As..`):
@@ -35,8 +36,7 @@
   * the file size is farther reduce by a significant amount
   * the file won't generate any errors when opened in a PDF viewer
 
-### License
+### Legal
 
-> [GPLv2](http://www.gnu.org/licenses/gpl-2.0.txt)
-
-> Copyright (c) 2016, Warren Bank
+* Copyright: [Warren Bank](https://github.com/warren-bank)
+* License: [GPL-2.0](http://www.gnu.org/licenses/gpl-2.0.txt)
