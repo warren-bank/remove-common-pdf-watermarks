@@ -4,6 +4,9 @@
 
 > Each branch is a variation of the script, customized to remove a particular common PDF watermark.
 
+* ["pdf-xchange-editor"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/pdf-xchange-editor)
+  * generic methodology
+    * removes all objects with an element containing the labels: `/Private /Watermark`
 * ["www.finebook.ir"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/finebook.ir)
 * ["www.it-ebooks.info"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/it-ebooks)
 * ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook)
