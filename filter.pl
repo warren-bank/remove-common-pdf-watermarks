@@ -12,7 +12,7 @@ binmode(FH_OUT);
 my $buffer         = '';
 my $pattern_start  = qr/^\d+\s+\d+\s+obj/;
 my $pattern_end    = qr/endobj\b/;
-my $pattern_filter = qr/\/Private\s+\/Watermark/;
+my $pattern_filter = qr/(?:\/Private\s+\/Watermark|[Pp]df-[Xx]change)/;
 
 while (my $line = <FH_IN>) {
   if ($buffer){
