@@ -1,3 +1,3 @@
 @echo off
 
-perl filter.pl
+perl -I "%~dp0." filter.pl %*
