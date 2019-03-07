@@ -12,7 +12,8 @@
 * ["www.finebook.ir"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/finebook.ir)
 * ["www.it-ebooks.info"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/it-ebooks)
 * ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook)
-  * [decrypted/decompressed (with `qpdf`)](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook-decrypted-decompressed)
+* ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook-compressed) with zlib compressed data within "FlateDecode" streams
+* ["www.allitebooks.com"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/allitebooks-compressed) with zlib compressed data within "FlateDecode" streams
 
 ### Notes
 
