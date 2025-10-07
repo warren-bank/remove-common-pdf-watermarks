@@ -14,6 +14,7 @@
 * ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook)
 * ["www.wowebook.org"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/wowebook-compressed) with zlib compressed data within "FlateDecode" streams
 * ["www.allitebooks.com"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/allitebooks-compressed) with zlib compressed data within "FlateDecode" streams
+* ["OceanofPDF.com"](https://github.com/warren-bank/remove-common-pdf-watermarks/tree/oceanofpdf-compressed) with zlib compressed data within "FlateDecode" streams
 
 ### Notes
 
