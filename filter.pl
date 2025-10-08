@@ -9,67 +9,113 @@ open(FH_OUT, ">out.pdf");
 binmode(FH_IN);
 binmode(FH_OUT);
 
-my $buffer         = '';
-my $pattern_start  = qr/^\d+\s+\d+\s+obj/;
-my $pattern_end    = qr/endobj\b/;
-my $pattern_filter = qr/\(https?:\/\/oceanofpdf\.com\/\)/;
+my $pattern_obj_start = qr/^\d+\s+\d+\s+obj/;
+my $pattern_obj_end   = qr/endobj\b/;
 
-my $stream                      = 0;
-my $pattern_stream_start        = qr/^stream$/;
-my $pattern_stream_end          = qr/^endstream$/;
-my @pattern_stream_text_filters = (
-  qr/\<0032004600480044005100520049003300270029\>/,  # "OceanofPDF"
-  qr/\<0011004600520050\>/                           # ".com"
-);
+my $pattern_stream_start = qr/^stream$/;
+my $pattern_stream_end   = qr/^endstream$/;
+
+my $pattern_text_start = qr/^BT$/;
+my $pattern_text_end   = qr/^ET$/;
+
+my $obj_buffer         = '';
+my $obj_filter_pattern = qr/\(https?:\/\/oceanofpdf\.com\/\)/;
+
+my $inspect_stream     = 0;
+my $inspect_text       = 0;
+my $stream_buffer_pre  = '';
+my $stream_sandbox     = '';
+my $stream_buffer_post = '';
+
+# the idea is:
+#   foreach obj that contains a matching URL {
+#     1. remove obj
+#     2. process next obj
+#        - if it contains a stream with text blocks,
+#          then remove the last text block in this stream
+#   }
 
 while (my $line = <FH_IN>) {
-  if ($buffer){
+  if ($obj_buffer) {
 
-    # process stream (if appropriate)
-    if ($stream) {
-      if ($line =~ m/$pattern_stream_end/){
-        $stream = 0;
+    if ($inspect_stream) {
+
+      if ($stream_buffer_pre) {
+        if ($line =~ m/$pattern_stream_end/) {
+          $obj_buffer = $obj_buffer . $stream_buffer_pre;
+          $obj_buffer = $obj_buffer . $stream_buffer_post;
+          $obj_buffer = $obj_buffer . $line;
+
+          $inspect_stream     = 0;
+          $inspect_text       = 0;
+          $stream_buffer_pre  = '';
+          $stream_sandbox     = '';
+          $stream_buffer_post = '';
+        }
+        elsif ($line =~ m/$pattern_text_start/) {
+          if ($stream_sandbox) {
+            $stream_buffer_pre = $stream_buffer_pre . $stream_sandbox;
+          }
+          if ($stream_buffer_post) {
+            $stream_buffer_pre = $stream_buffer_pre . $stream_buffer_post;
+          }
+          $stream_sandbox = $line;
+          $stream_buffer_post = '';
+          $inspect_text = 1;
+        }
+        elsif ($line =~ m/$pattern_text_end/) {
+          $stream_sandbox = $stream_sandbox . $line;
+          $inspect_text = 0;
+        }
+        elsif ($inspect_text) {
+          $stream_sandbox = $stream_sandbox . $line;
+        }
+        else {
+          $stream_buffer_post = $stream_buffer_post . $line;
+        }
+      }
+      elsif ( $line =~ m/$pattern_stream_start/ ) {
+        $stream_buffer_pre = $line;
       }
       else {
-        # filter text in stream
-        foreach my $pattern_stream_text_filter (@pattern_stream_text_filters) {
-          $line =~ s/$pattern_stream_text_filter/<>/g;
+        $obj_buffer = $obj_buffer . $line;
+      }
+
+    }
+    else {
+      $obj_buffer = $obj_buffer . $line;
+
+      if ($line =~ m/$pattern_obj_end/) {
+        if ( $obj_buffer =~ m/$obj_filter_pattern/ ) {
+          $obj_buffer = '';
+          $inspect_stream = 1;
+        }
+        else {
+          print FH_OUT $obj_buffer;
+          $obj_buffer = '';
         }
       }
     }
-    elsif ( $line =~ m/$pattern_stream_start/ ){
-      $stream = 1;
-    }
-
-    $buffer = $buffer . $line;
-
-    if ($line =~ m/$pattern_end/){
-
-      if ( $buffer =~ m/$pattern_filter/ ){
-        $buffer = '';
-      } else {
-        print FH_OUT $buffer;
-        $buffer = '';
-      }
-
-    }
   }
-
+  elsif ( $line =~ m/$pattern_obj_start/ ) {
+    $obj_buffer = $line;
+  }
   else {
-
-    if ( $line =~ m/$pattern_start/ ){
-      $buffer = $line;
-    } else {
-      print FH_OUT $line;
-    }
-
+    print FH_OUT $line;
   }
-
 }
 
-if ($buffer){
-  print FH_OUT $buffer;
-  $buffer = '';
+if ($obj_buffer) {
+  if ($stream_buffer_pre) {
+    $obj_buffer = $obj_buffer . $stream_buffer_pre;
+    $obj_buffer = $obj_buffer . $stream_buffer_post;
+
+    $stream_buffer_pre  = '';
+    $stream_sandbox     = '';
+    $stream_buffer_post = '';
+  }
+  print FH_OUT $obj_buffer;
+  $obj_buffer = '';
 }
 
 close (FH_IN);
